@@ -1,0 +1,10 @@
+{
+  "name": "Demarque Immo",
+  "short_name": "Demarque",
+  "description": "Pige immobilière — Angers & Val de Loire",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f7f7f5",
+  "theme_color": "#f7f7f5",
+  "orientation": "portrait"
+}

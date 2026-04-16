@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Demarque">
+<meta name="theme-color" content="#f7f7f5">
+<link rel="manifest" href="manifest.json">
+<title>Demarque Immo</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #f7f7f5;
+  --bg2:      #f0f0ed;
+  --white:    #ffffff;
+  --s1:       #fafaf8;
+  --bd:       #e8e8e4;
+  --bd2:      #d4d4ce;
+  --tx:       #1a1a18;
+  --tx2:      #4a4a46;
+  --tx3:      #9a9a94;
+  --navy:     #1a2744;
+  --navy2:    #243460;
+  --blue:     #2563eb;
+  --blue-l:   #eff4ff;
+  --blue-m:   #dbeafe;
+  --ok:       #16a34a;
+  --ok-l:     #f0fdf4;
+  --ok-m:     #dcfce7;
+  --warn:     #d97706;
+  --warn-l:   #fffbeb;
+  --err:      #dc2626;
+  --err-l:    #fef2f2;
+  --gold:     #b45309;
+  --gold-l:   #fef3c7;
+  --st: env(safe-area-inset-top, 0px);
+  --sb: env(safe-area-inset-bottom, 0px);
+  --r: 14px;
+  --r-sm: 10px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; background: var(--bg); color: var(--tx); font-family: 'Geist', sans-serif; overflow: hidden; -webkit-font-smoothing: antialiased; }
+
+.app { display: flex; flex-direction: column; height: 100dvh; padding-top: var(--st); padding-bottom: var(--sb); }
+
+/* ── HEADER ── */
+.hdr {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px 14px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--bd);
+  flex-shrink: 0;
+}
+.brand { display: flex; align-items: center; gap: 10px; }
+.brand-mark {
+  width: 32px; height: 32px; border-radius: 9px;
+  background: var(--navy);
+  display: flex; align-items: center; justify-content: center;
+}
+.brand-mark svg { display: block; }
+.brand-copy {}
+.brand-name {
+  font-family: 'Instrument Serif', serif;
+  font-size: 18px; line-height: 1;
+  color: var(--tx); letter-spacing: -.2px;
+}
+.brand-name em { font-style: italic; color: var(--tx3); }
+.brand-tag { font-size: 10px; color: var(--tx3); letter-spacing: .5px; margin-top: 1px; font-weight: 400; }
+
+.hdr-status { display: flex; align-items: center; gap: 6px; }
+.status-chip {
+  display: flex; align-items: center; gap: 5px;
+  background: var(--white); border: 1px solid var(--bd);
+  border-radius: 20px; padding: 5px 11px;
+  font-size: 11px; font-weight: 500; color: var(--tx3);
+  letter-spacing: .3px;
+}
+.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--bd2); transition: all .3s; }
+.dot.run { background: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,.15); animation: breathe .9s infinite; }
+.dot.ok  { background: var(--ok);   box-shadow: 0 0 0 3px rgba(22,163,74,.12); animation: breathe 2s infinite; }
+@keyframes breathe { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+/* ── BANNERS ── */
+.banner {
+  margin: 10px 16px 0; border-radius: var(--r-sm);
+  padding: 11px 14px; font-size: 12px; line-height: 1.5;
+  display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+}
+.banner.notif { background: var(--blue-l); border: 1px solid var(--blue-m); color: var(--blue); }
+.banner.warn-bar { background: var(--warn-l); border: 1px solid #fde68a; color: var(--warn); }
+.banner-ico { font-size: 16px; flex-shrink: 0; }
+.banner-txt { flex: 1; }
+.banner-txt strong { display: block; font-weight: 600; font-size: 12px; margin-bottom: 1px; }
+.banner-btn {
+  background: var(--blue); color: #fff; border: none;
+  border-radius: 7px; padding: 6px 12px;
+  font-size: 11px; font-family: 'Geist', sans-serif; font-weight: 600;
+  cursor: pointer; flex-shrink: 0;
+}
+
+/* ── TIMER ── */
+.tbar {
+  margin: 8px 16px 0; border-radius: var(--r-sm);
+  background: var(--white); border: 1px solid var(--bd);
+  padding: 9px 14px; display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+}
+.tbar-lbl { font-size: 11px; color: var(--tx3); font-weight: 500; flex-shrink: 0; }
+.tbar-track { flex: 1; height: 3px; background: var(--bg2); border-radius: 2px; overflow: hidden; }
+.tbar-fill { height: 100%; background: var(--blue); border-radius: 2px; transition: width 1s linear; width: 0%; }
+.tbar-next { font-size: 11px; color: var(--blue); font-weight: 600; flex-shrink: 0; }
+
+/* ── SCROLL ── */
+.scroll { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+.scroll::-webkit-scrollbar { display: none; }
+
+/* ── SCREENS ── */
+.scr { display: none; padding: 16px 16px 110px; }
+.scr.on { display: block; }
+
+/* ── STATS ROW ── */
+.stats-row {
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 8px;
+  margin-bottom: 20px;
+}
+.stat-card {
+  background: var(--white); border: 1px solid var(--bd);
+  border-radius: var(--r); padding: 12px 10px; text-align: center;
+}
+.stat-num {
+  font-family: 'Instrument Serif', serif;
+  font-size: 26px; line-height: 1; color: var(--tx);
+}
+.stat-num.blue { color: var(--blue); }
+.stat-num.green { color: var(--ok); }
+.stat-num.amber { color: var(--warn); }
+.stat-num.gold  { color: var(--gold); }
+.stat-lbl { font-size: 9px; color: var(--tx3); text-transform: uppercase; letter-spacing: .6px; margin-top: 4px; font-weight: 500; }
+
+/* ── PILL TABS ── */
+.segs {
+  display: flex; background: var(--bg2); border-radius: 10px;
+  padding: 3px; margin-bottom: 18px; gap: 2px;
+  overflow-x: auto;
+}
+.segs::-webkit-scrollbar { display: none; }
+.seg {
+  flex: 1; min-width: fit-content; padding: 7px 10px; border-radius: 8px;
+  font-size: 11px; font-weight: 500; color: var(--tx3);
+  cursor: pointer; transition: all .18s; text-align: center;
+  white-space: nowrap; background: transparent; border: none;
+  font-family: 'Geist', sans-serif;
+}
+.seg.on { background: var(--white); color: var(--tx); box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+.seg-count {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--bg2); border-radius: 6px;
+  padding: 0 5px; font-size: 10px; font-weight: 600;
+  margin-left: 4px; min-width: 18px; height: 16px;
+  color: var(--tx3); transition: all .18s;
+}
+.seg.on .seg-count { background: var(--bd); color: var(--tx); }
+.seg.on.has-new .seg-count { background: var(--blue); color: #fff; }
+
+/* ── ANNONCE CARD ── */
+.acard {
+  background: var(--white); border: 1px solid var(--bd);
+  border-radius: var(--r); margin-bottom: 10px;
+  overflow: hidden; animation: up .25s ease; transition: box-shadow .2s;
+}
+.acard:active { box-shadow: 0 0 0 2px var(--bd2); }
+@keyframes up { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
+
+/* status stripe on left */
+.acard::before { content:''; display:block; height:2px; background:var(--bd); transition:background .2s; }
+.acard.kept::before  { background:var(--ok); }
+.acard.ignored::before { background:var(--bd2); }
+.acard.msent::before { background:var(--blue); }
+.acard.ignored { opacity:.45; }
+
+.atop { padding: 14px 16px 12px; cursor: pointer; -webkit-user-select:none; user-select:none; }
+.atop-row1 { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
+.asrc { font-size: 10px; font-weight: 600; color: var(--tx3); text-transform: uppercase; letter-spacing: .6px; }
+.asrc-badges { display:flex; align-items:center; gap:5px; }
+.badge-new { background:var(--blue); color:#fff; border-radius:4px; padding:2px 7px; font-size:9px; font-weight:700; letter-spacing:.4px; }
+.badge-kept { background:var(--ok-m); color:var(--ok); border-radius:4px; padding:2px 7px; font-size:9px; font-weight:700; }
+.badge-sent { background:var(--blue-m); color:var(--blue); border-radius:4px; padding:2px 7px; font-size:9px; font-weight:700; }
+.atime { font-size: 10px; color: var(--tx3); }
+
+.atitle {
+  font-family: 'Instrument Serif', serif;
+  font-size: 17px; line-height: 1.25; color: var(--tx);
+  margin-bottom: 5px;
+}
+.aprice-row { display: flex; align-items: baseline; gap: 8px; }
+.aprice { font-size: 15px; font-weight: 600; color: var(--tx); }
+.aprice-meta { font-size: 12px; color: var(--tx3); }
+
+/* expanded detail */
+.adet { display: none; border-top: 1px solid var(--bd); padding: 14px 16px; }
+.adet.open { display: block; }
+.adet-chips { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; }
+.chip { display:inline-flex; align-items:center; gap:4px; font-size:11px; font-weight:500; padding:5px 10px; border-radius:20px; background:var(--bg2); color:var(--tx2); border: 1px solid var(--bd); }
+.chip.em { background:var(--blue-l); color:var(--blue); border-color:var(--blue-m); }
+.chip.ph { background:var(--ok-l); color:var(--ok); border-color:var(--ok-m); }
+.adesc { font-size: 13px; color: var(--tx2); line-height: 1.65; margin-bottom: 14px; }
+
+/* action row */
+.abtns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.abtns.full { grid-template-columns: 1fr; }
+.abtn {
+  padding: 11px 12px; border-radius: var(--r-sm);
+  font-size: 13px; font-weight: 500; font-family: 'Geist', sans-serif;
+  cursor: pointer; border: 1px solid var(--bd);
+  background: var(--bg2); color: var(--tx2);
+  text-align: center; transition: all .15s;
+  -webkit-user-select: none;
+}
+.abtn:active { transform: scale(.97); }
+.abtn.keep   { background:var(--ok-l); color:var(--ok); border-color:var(--ok-m); }
+.abtn.keep.on { background:var(--ok); color:#fff; border-color:var(--ok); }
+.abtn.ign    { background:var(--err-l); color:var(--err); border-color:#fecaca; }
+.abtn.ign.on { background:var(--err); color:#fff; border-color:var(--err); }
+.abtn.q      { background:var(--blue-l); color:var(--blue); border-color:var(--blue-m); }
+.abtn.q.on   { background:var(--blue); color:#fff; border-color:var(--blue); }
+.abtn.done   { background:var(--ok-l); color:var(--ok); border-color:var(--ok-m); pointer-events:none; }
+
+/* ── MESSAGE CARDS ── */
+.mcard {
+  background: var(--white); border: 1px solid var(--bd);
+  border-radius: var(--r); padding: 16px; margin-bottom: 10px;
+  animation: up .25s ease;
+}
+.mcard::before { content:''; display:block; height:2px; margin:-16px -16px 14px; border-radius:var(--r) var(--r) 0 0; background:var(--bd); }
+.mcard.pending::before { background: var(--warn); }
+.mcard.sent::before    { background: var(--ok); }
+
+.mcard-top { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; margin-bottom:4px; }
+.mcard-name { font-family:'Instrument Serif',serif; font-size:18px; color:var(--tx); }
+.mcard-time { font-size:10px; color:var(--tx3); margin-top:4px; flex-shrink:0; }
+.mcard-addr { font-size:12px; color:var(--tx3); margin-bottom:12px; }
+.mcard-contacts { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; }
+.mcard-msg {
+  font-size: 12px; color: var(--tx2); line-height: 1.7;
+  background: var(--bg); border: 1px solid var(--bd);
+  border-radius: var(--r-sm); padding: 12px 14px;
+  margin-bottom: 12px; white-space: pre-wrap;
+  font-family: 'Geist', sans-serif;
+}
+.mcard-foot { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.status-tag { display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:500; padding:5px 11px; border-radius:20px; }
+.status-tag.ok   { background:var(--ok-l); color:var(--ok); }
+.status-tag.pend { background:var(--warn-l); color:var(--warn); }
+.send-btn {
+  padding: 9px 18px; border-radius: var(--r-sm);
+  font-size: 13px; font-weight: 600; font-family:'Geist',sans-serif;
+  cursor: pointer; border: none;
+  background: var(--navy); color: #fff;
+  transition: all .15s;
+}
+.send-btn:active { background: var(--navy2); transform: scale(.97); }
+
+/* ── CONFIG ── */
+.cfg-section { margin-bottom: 24px; }
+.cfg-section-title { font-size: 11px; font-weight: 600; color: var(--tx3); text-transform: uppercase; letter-spacing: .8px; margin-bottom: 10px; }
+.src-grid { display:grid; grid-template-columns:1fr 1fr; gap:7px; }
+.src {
+  display:flex; align-items:center; gap:9px;
+  background:var(--white); border:1px solid var(--bd);
+  border-radius:var(--r-sm); padding:11px 12px;
+  cursor:pointer; transition:all .15s; -webkit-user-select:none;
+}
+.src.on { border-color:var(--blue); background:var(--blue-l); }
+.src-box {
+  width:16px; height:16px; border:1.5px solid var(--bd2);
+  border-radius:4px; flex-shrink:0; display:flex;
+  align-items:center; justify-content:center; font-size:9px; transition:all .2s;
+}
+.src.on .src-box { background:var(--blue); border-color:var(--blue); color:#fff; }
+.src-nm { font-size:13px; color:var(--tx); font-weight:400; }
+
+.field { display:flex; flex-direction:column; gap:5px; margin-bottom:12px; }
+.field:last-child { margin-bottom:0; }
+.field label { font-size:11px; font-weight:500; color:var(--tx3); }
+.field input, .field select, .field textarea {
+  background: var(--white); border: 1px solid var(--bd);
+  border-radius: var(--r-sm); padding: 11px 13px;
+  color: var(--tx); font-family:'Geist',sans-serif; font-size:14px;
+  outline: none; width: 100%; -webkit-appearance:none;
+  transition: border-color .15s, box-shadow .15s;
+}
+.field input::placeholder, .field textarea::placeholder { color:var(--tx3); }
+.field input:focus, .field select:focus, .field textarea:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(37,99,235,.1);
+}
+.field select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239a9a94' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 13px center; padding-right:32px;
+}
+.field textarea { resize:none; min-height:120px; line-height:1.6; font-size:13px; }
+.r2 { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+
+.card-block { background:var(--white); border:1px solid var(--bd); border-radius:var(--r); padding:16px; margin-bottom:12px; }
+
+.tog-row { display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid var(--bd); }
+.tog-row:last-child { border:none; padding-bottom:0; }
+.tog-label { font-size:14px; color:var(--tx); font-weight:400; }
+.tog {
+  width:42px; height:24px; background:var(--bd2); border-radius:20px;
+  position:relative; cursor:pointer; transition:background .2s; flex-shrink:0;
+}
+.tog.on { background:var(--navy); }
+.tog::after {
+  content:''; position:absolute; top:2px; left:2px;
+  width:20px; height:20px; background:#fff; border-radius:50%;
+  transition:transform .2s; box-shadow:0 1px 3px rgba(0,0,0,.2);
+}
+.tog.on::after { transform:translateX(18px); }
+
+.vars-hint { font-size:11px; color:var(--tx3); background:var(--bg2); border-radius:var(--r-sm); padding:9px 12px; margin-bottom:12px; line-height:1.7; }
+.vars-hint span { color:var(--blue); font-weight:500; }
+
+/* LAUNCH BTN */
+.btn-launch {
+  width:100%; padding:16px;
+  background:var(--navy); color:#fff;
+  border:none; border-radius:var(--r);
+  font-family:'Geist',sans-serif; font-weight:600; font-size:15px;
+  cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;
+  transition:all .15s; margin-bottom:10px; letter-spacing:-.1px;
+}
+.btn-launch:active { background:var(--navy2); transform:scale(.99); }
+.btn-launch:disabled { background:var(--bd2); color:var(--tx3); cursor:not-allowed; }
+.btn-stop {
+  width:100%; padding:13px; background:transparent;
+  color:var(--err); border:1px solid #fecaca;
+  border-radius:var(--r); font-family:'Geist',sans-serif;
+  font-weight:600; font-size:14px; cursor:pointer; display:none;
+  transition:all .15s; margin-bottom:10px;
+}
+.btn-stop:active { background:var(--err-l); }
+
+/* ── PROGRESS ── */
+.prog-item { display:flex; align-items:center; gap:12px; padding:11px 0; border-bottom:1px solid var(--bd); }
+.prog-item:last-child { border:none; }
+.prog-name { font-size:13px; color:var(--tx); width:100px; flex-shrink:0; font-weight:400; }
+.prog-track { flex:1; height:3px; background:var(--bg2); border-radius:2px; overflow:hidden; }
+.prog-fill { height:100%; background:var(--navy); border-radius:2px; transition:width .5s ease; width:0%; }
+.prog-count { font-size:11px; color:var(--tx3); width:46px; text-align:right; flex-shrink:0; font-weight:500; }
+
+/* ── TERMINAL ── */
+.term {
+  background:#0f0f0d; border-radius:var(--r);
+  padding:14px; font-size:11px; line-height:1.9;
+  height:240px; overflow-y:auto; -webkit-overflow-scrolling:touch;
+  font-family:'Geist',monospace;
+}
+.term::-webkit-scrollbar { display:none; }
+.ll { display:flex; gap:10px; }
+.lt { color:#444; flex-shrink:0; font-size:10px; }
+.li { color:#60a5fa; } .ls { color:#4ade80; } .lw { color:#fbbf24; } .lf { color:#e5c07b; }
+
+/* ── EMPTY ── */
+.empty { display:flex; flex-direction:column; align-items:center; padding:52px 20px; gap:10px; text-align:center; }
+.empty-ico { font-size:36px; opacity:.2; }
+.empty-title { font-family:'Instrument Serif',serif; font-size:18px; color:var(--tx2); }
+.empty-sub { font-size:12px; color:var(--tx3); max-width:220px; line-height:1.5; }
+
+/* ── TOAST ── */
+.toast {
+  position:fixed; bottom:84px; left:12px; right:12px;
+  background:var(--navy); color:#fff;
+  border-radius:var(--r); padding:13px 16px; font-size:13px; font-weight:500;
+  z-index:600; transform:translateY(20px); opacity:0;
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);
+  display:flex; align-items:center; gap:8px;
+}
+.toast.show { transform:translateY(0); opacity:1; }
+.toast.ok   { background:#15803d; }
+.toast.warn { background:var(--warn); }
+.toast.err  { background:var(--err); }
+
+/* ── BOTTOM NAV ── */
+.nav {
+  display:flex; background:rgba(247,247,245,.96);
+  border-top:1px solid var(--bd); flex-shrink:0;
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+}
+.ni {
+  flex:1; display:flex; flex-direction:column; align-items:center;
+  justify-content:center; padding:10px 4px 8px; cursor:pointer;
+  -webkit-user-select:none; position:relative; transition:all .15s;
+}
+.ni-ico { font-size:22px; transition:transform .2s; }
+.ni-lbl { font-size:9px; color:var(--tx3); margin-top:3px; letter-spacing:.4px; font-weight:500; text-transform:uppercase; }
+.ni.on .ni-lbl { color:var(--navy); }
+.ni.on .ni-ico { transform:scale(1.08); }
+.ni.on::after { content:''; position:absolute; bottom:0; left:50%; transform:translateX(-50%); width:20px; height:2px; background:var(--navy); border-radius:1px 1px 0 0; }
+.nbadge {
+  position:absolute; top:7px; right:calc(50% - 16px);
+  background:var(--blue); color:#fff; border-radius:8px;
+  padding:1px 5px; font-size:9px; font-weight:700;
+  min-width:16px; text-align:center; display:none;
+}
+
+/* ── LAST SCAN INFO ── */
+.scan-info {
+  background:var(--white); border:1px solid var(--bd); border-radius:var(--r-sm);
+  padding:11px 14px; margin-bottom:14px; font-size:12px; color:var(--tx3);
+  display:flex; align-items:center; gap:8px;
+}
+.scan-info-dot { width:6px; height:6px; border-radius:50%; background:var(--ok); flex-shrink:0; }
+
+/* ── SEND ALL BAR ── */
+.send-all-bar {
+  background:var(--navy); border-radius:var(--r);
+  padding:14px 16px; margin-bottom:14px;
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+}
+.send-all-txt { font-size:13px; color:rgba(255,255,255,.8); }
+.send-all-txt strong { color:#fff; display:block; font-size:14px; margin-bottom:1px; }
+.send-all-btn {
+  background:#fff; color:var(--navy); border:none;
+  border-radius:8px; padding:8px 16px;
+  font-size:13px; font-weight:700; font-family:'Geist',sans-serif;
+  cursor:pointer; white-space:nowrap; flex-shrink:0;
+}
+.send-all-btn:active { background:var(--bg2); }
+
+/* ── VALIDATE WARN ── */
+.validate-warn {
+  background:var(--warn-l); border:1px solid #fde68a;
+  border-radius:var(--r-sm); padding:11px 14px;
+  font-size:12px; color:var(--warn); margin-bottom:14px;
+  display:flex; align-items:center; gap:8px; font-weight:500;
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 1.5L1.5 6.5V14h4.5v-3.5h4V14H14.5V6.5L8 1.5z" fill="none" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="brand-copy">
+        <div class="brand-name">Demarque <em>Immo</em></div>
+        <div class="brand-tag">Pige immobilière · Maine-et-Loire</div>
+      </div>
+    </div>
+    <div class="hdr-status">
+      <div class="status-chip">
+        <div class="dot" id="sDot"></div>
+        <span id="sTxt">Prêt</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTIF BANNER -->
+  <div class="banner notif" id="notifBanner" style="display:none">
+    <span class="banner-ico">🔔</span>
+    <div class="banner-txt"><strong>Activer les notifications</strong>Sois alerté dès que de nouvelles annonces arrivent</div>
+    <button class="banner-btn" onclick="askNotif()">Activer</button>
+  </div>
+
+  <!-- TIMER BAR -->
+  <div class="tbar" id="timerBar" style="display:none">
+    <div class="tbar-lbl">Prochain scan</div>
+    <div class="tbar-track"><div class="tbar-fill" id="timerFill"></div></div>
+    <div class="tbar-next" id="timerNext">--:--</div>
+  </div>
+
+  <!-- SCROLL -->
+  <div class="scroll" id="SCROLL">
+
+    <!-- ░ ANNONCES ░ -->
+    <div class="scr on" id="scr-triage">
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-num blue" id="sTotal">0</div><div class="stat-lbl">Total</div></div>
+        <div class="stat-card"><div class="stat-num green" id="sKept">0</div><div class="stat-lbl">Gardés</div></div>
+        <div class="stat-card"><div class="stat-num amber" id="sPend">0</div><div class="stat-lbl">À envoyer</div></div>
+        <div class="stat-card"><div class="stat-num gold" id="sSent">0</div><div class="stat-lbl">Envoyés</div></div>
+      </div>
+
+      <div class="validate-warn" id="validateWarn" style="display:none">
+        ⚠️ <span id="validateWarnTxt">Nouvelles annonces à trier — valide ou ignore avant d'envoyer.</span>
+      </div>
+
+      <div class="segs" id="segs">
+        <button class="seg on" onclick="setFilter('all',this)">Tous<span class="seg-count" id="cAll">0</span></button>
+        <button class="seg" onclick="setFilter('new',this)">À trier<span class="seg-count" id="cNew">0</span></button>
+        <button class="seg" onclick="setFilter('kept',this)">Gardés<span class="seg-count" id="cKept">0</span></button>
+        <button class="seg" onclick="setFilter('ignored',this)">Ignorés<span class="seg-count" id="cIgn">0</span></button>
+      </div>
+
+      <div class="empty" id="emptyTriage">
+        <div class="empty-ico">🏡</div>
+        <div class="empty-title">Aucune annonce</div>
+        <div class="empty-sub">Lance la pige depuis l'onglet Config pour démarrer</div>
+      </div>
+      <div id="triGrid"></div>
+    </div>
+
+    <!-- ░ MESSAGES ░ -->
+    <div class="scr" id="scr-msg">
+      <div class="send-all-bar" id="sendAllBar" style="display:none">
+        <div class="send-all-txt">
+          <strong id="sendAllCount">0 messages prêts</strong>
+          Tous validés manuellement
+        </div>
+        <button class="send-all-btn" onclick="sendAll()">Tout envoyer</button>
+      </div>
+
+      <div class="segs" id="msegs">
+        <button class="seg on" onclick="setMsgFilter('all',this)">Tous<span class="seg-count" id="mAll">0</span></button>
+        <button class="seg" onclick="setMsgFilter('pending',this)">En attente<span class="seg-count" id="mPend">0</span></button>
+        <button class="seg" onclick="setMsgFilter('sent',this)">Envoyés<span class="seg-count" id="mSent">0</span></button>
+      </div>
+
+      <div class="empty" id="emptyMsg">
+        <div class="empty-ico">✉️</div>
+        <div class="empty-title">Aucun message</div>
+        <div class="empty-sub">Garde des annonces pour générer tes messages personnalisés</div>
+      </div>
+      <div id="msgGrid"></div>
+    </div>
+
+    <!-- ░ CONFIG ░ -->
+    <div class="scr" id="scr-config">
+
+      <div class="scan-info" id="lastScanInfo" style="display:none">
+        <div class="scan-info-dot"></div>
+        <span id="lastScanTxt"></span>
+      </div>
+
+      <div class="cfg-section">
+        <div class="cfg-section-title">Sources</div>
+        <div class="src-grid">
+          <div class="src on" onclick="toggleSrc(this)"><div class="src-box">✓</div><span class="src-nm">LeBonCoin</span></div>
+          <div class="src on" onclick="toggleSrc(this)"><div class="src-box">✓</div><span class="src-nm">PAP.fr</span></div>
+          <div class="src on" onclick="toggleSrc(this)"><div class="src-box">✓</div><span class="src-nm">Particuliers</span></div>
+          <div class="src on" onclick="toggleSrc(this)"><div class="src-box">✓</div><span class="src-nm">SeLoger</span></div>
+          <div class="src on" onclick="toggleSrc(this)"><div class="src-box">✓</div><span class="src-nm">Bien'ici</span></div>
+          <div class="src on" onclick="toggleSrc(this)"><div class="src-box">✓</div><span class="src-nm">Figaro Immo</span></div>
+          <div class="src on" onclick="toggleSrc(this)"><div class="src-box">✓</div><span class="src-nm">Logic-Immo</span></div>
+          <div class="src" onclick="toggleSrc(this)"><div class="src-box"></div><span class="src-nm">Explorimmo</span></div>
+        </div>
+      </div>
+
+      <div class="cfg-section">
+        <div class="cfg-section-title">Zone</div>
+        <div class="card-block">
+          <div class="field"><label>Département</label><select><option>Maine-et-Loire (49)</option></select></div>
+          <div class="field"><label>Secteur prioritaire</label>
+            <select><option>Angers + communes Loire</option><option>Angers uniquement</option><option>Levée Loire → Saumur</option><option>Saumur et alentours</option></select>
+          </div>
+          <div class="field"><label>Rayon (km)</label><input type="number" value="30" min="5" max="80"></div>
+        </div>
+      </div>
+
+      <div class="cfg-section">
+        <div class="cfg-section-title">Filtres</div>
+        <div class="card-block">
+          <div class="field"><label>Type de bien</label><select><option>Tous types</option><option>Maison</option><option>Appartement</option><option>Terrain</option></select></div>
+          <div class="field"><label>Transaction</label><select><option>Vente</option><option>Location</option><option>Vente &amp; Location</option></select></div>
+          <div class="r2">
+            <div class="field"><label>Prix min (€)</label><input type="number" placeholder="0"></div>
+            <div class="field"><label>Prix max (€)</label><input type="number" placeholder="Sans limite"></div>
+          </div>
+          <div class="r2">
+            <div class="field"><label>Surface min</label><input type="number" placeholder="0 m²"></div>
+            <div class="field"><label>Pièces min</label><input type="number" placeholder="1"></div>
+          </div>
+          <div class="field"><label>Ancienneté max</label>
+            <select><option>24 heures</option><option selected>48 heures</option><option>7 jours</option></select>
+          </div>
+        </div>
+      </div>
+
+      <div class="cfg-section">
+        <div class="cfg-section-title">Automatisation</div>
+        <div class="card-block">
+          <div class="tog-row"><span class="tog-label">Scan automatique</span><div class="tog on" id="togAuto" onclick="this.classList.toggle('on');saveCfg()"></div></div>
+          <div class="field" style="margin-top:12px"><label>Fréquence</label>
+            <select id="cfgFreq" onchange="saveCfg()">
+              <option value="1">Toutes les heures</option>
+              <option value="2">Toutes les 2 heures</option>
+              <option value="6">Toutes les 6 heures</option>
+              <option value="12">Toutes les 12 heures</option>
+              <option value="24" selected>Toutes les 24 heures</option>
+            </select>
+          </div>
+          <div class="tog-row"><span class="tog-label">Notifications push</span><div class="tog on" id="togNotif" onclick="this.classList.toggle('on')"></div></div>
+          <div class="tog-row"><span class="tog-label">Particuliers seulement</span><div class="tog on" id="togPart" onclick="this.classList.toggle('on')"></div></div>
+        </div>
+      </div>
+
+      <div class="cfg-section">
+        <div class="cfg-section-title">Mon message</div>
+        <div class="card-block">
+          <div class="vars-hint">Variables disponibles : <span>[PRENOM]</span> <span>[NOM]</span> <span>[BIEN]</span> <span>[VILLE]</span> <span>[TEL]</span></div>
+          <div class="field"><label>Ton nom / agence</label><input type="text" id="cfgNom" placeholder="Jean Dupont — Demarque Immo" oninput="saveCfg()"></div>
+          <div class="field"><label>Email</label><input type="email" id="cfgEmail" placeholder="toi@email.com" oninput="saveCfg()"></div>
+          <div class="field"><label>Téléphone</label><input type="tel" id="cfgTel" placeholder="06 XX XX XX XX" oninput="saveCfg()"></div>
+          <div class="field"><label>Message</label>
+            <textarea id="cfgMsg" oninput="saveCfg()">Bonjour [PRENOM],
+
+Je suis [NOM], agent immobilier spécialisé sur Angers et le Val de Loire.
+
+J'ai remarqué votre annonce pour [BIEN] à [VILLE] et je serais ravi(e) de vous proposer une estimation gratuite et sans engagement.
+
+📞 [TEL]
+
+Cordialement, [NOM]</textarea>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-launch" id="launchBtn" onclick="startScan()">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="currentColor"><path d="M2.5 1.5l8.5 5-8.5 5z"/></svg>
+        Lancer la pige
+      </button>
+      <button class="btn-stop" id="stopBtn" onclick="stopScan()">Arrêter</button>
+
+    </div>
+
+    <!-- ░ SUIVI ░ -->
+    <div class="scr" id="scr-suivi">
+      <div class="cfg-section-title" style="margin-bottom:12px">Progression</div>
+      <div class="card-block" id="progList">
+        <div class="empty" style="padding:20px 0">
+          <div class="empty-ico" style="font-size:28px">⏳</div>
+          <div class="empty-title" style="font-size:15px">En attente</div>
+        </div>
+      </div>
+      <div style="height:16px"></div>
+      <div class="cfg-section-title" style="margin-bottom:10px">Journal</div>
+      <div class="term" id="TERM">
+        <div class="ll"><span class="lt">--:--:--</span><span style="color:#555">Système prêt...</span></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="nav">
+    <div class="ni on" id="ni-triage" onclick="goScr('triage',this)">
+      <div class="ni-ico">🏡</div><div class="ni-lbl">Annonces</div>
+      <div class="nbadge" id="nb-triage">0</div>
+    </div>
+    <div class="ni" id="ni-msg" onclick="goScr('msg',this)">
+      <div class="ni-ico">✉️</div><div class="ni-lbl">Messages</div>
+      <div class="nbadge" id="nb-msg">0</div>
+    </div>
+    <div class="ni" id="ni-config" onclick="goScr('config',this)">
+      <div class="ni-ico">⚙️</div><div class="ni-lbl">Config</div>
+    </div>
+    <div class="ni" id="ni-suivi" onclick="goScr('suivi',this)">
+      <div class="ni-ico">📊</div><div class="ni-lbl">Suivi</div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="TOAST"></div>
+
+<script>
+const DB=[
+  {id:1,src:'LeBonCoin',title:'Maison 4 pièces — Saint-Barthélemy-d\'Anjou',price:'285 000 €',surface:'98 m²',rooms:4,city:'Saint-Barthélemy-d\'Anjou',email:'michel.bernard@free.fr',phone:'06 12 34 56 78',type:'Maison',desc:'Belle maison de plain-pied avec garage double, jardin arboré 450 m², cuisine équipée récente, 3 chambres + bureau. DPE C. Toutes commodités à 5 min.',prenom:'Michel'},
+  {id:2,src:'PAP.fr',title:'Appartement T3 — Angers centre',price:'175 000 €',surface:'68 m²',rooms:3,city:'Angers',email:'sophie.m49@gmail.com',phone:null,type:'Appartement',desc:'T3 en étage élevé, double exposition est/ouest, parquet ancien, cave et parking inclus. Copropriété très saine. Quartier Saint-Laud.',prenom:'Sophie'},
+  {id:3,src:'PAP.fr',title:'Maison avec jardin — Bouchemaine',price:'320 000 €',surface:'115 m²',rooms:5,city:'Bouchemaine',email:null,phone:'07 89 01 23 45',type:'Maison',desc:'Maison familiale 5 pièces avec grand jardin 800 m² en bord de Loire. Véranda 20 m², garage, belle vue.',prenom:'Isabelle'},
+  {id:4,src:'LeBonCoin',title:'Studio meublé — Angers université',price:'650 €/mois',surface:'25 m²',rooms:1,city:'Angers',email:'loc.studio49@outlook.fr',phone:'06 55 44 33 22',type:'Appartement',desc:'Studio meublé refait à neuf 2023. Proche CHU et facultés. Bail étudiant. Charges incluses + fibre.',prenom:'Karim'},
+  {id:5,src:'SeLoger',title:'Maison contemporaine — Les Ponts-de-Cé',price:'298 000 €',surface:'105 m²',rooms:4,city:'Les Ponts-de-Cé',email:'pierre.v@free.fr',phone:'06 77 88 99 00',type:'Maison',desc:'Construction 2018, RT 2012, 4 chambres, terrasse couverte 20 m², double garage. École à 200 m.',prenom:'Pierre'},
+  {id:6,src:"Bien'ici",title:'T2 refait à neuf — Angers La Roseraie',price:'148 000 €',surface:'48 m²',rooms:2,city:'Angers',email:'marielaure49@gmail.com',phone:null,type:'Appartement',desc:'Entièrement rénové 2023, salle de bain italienne, cuisine ouverte, balcon plein sud. Charges faibles.',prenom:'Marie-Laure'},
+  {id:7,src:'PAP.fr',title:'Terrain constructible 800 m² — Mûrs-Érigné',price:'89 000 €',surface:'800 m²',rooms:0,city:'Mûrs-Érigné',email:'robert.terrain@wanadoo.fr',phone:'06 11 22 33 44',type:'Terrain',desc:'Terrain plat viabilisé. CU positif. Vue dégagée. Constructible jusqu\'à 150 m².',prenom:'Robert'},
+  {id:8,src:'Figaro Immo',title:'Maison en tuffeau — Saumur',price:'245 000 €',surface:'88 m²',rooms:4,city:'Saumur',email:null,phone:'06 98 76 54 32',type:'Maison',desc:'Maison de ville en tuffeau, 4 pièces sur 2 niveaux, cave voûtée, cour intérieure. Cœur de Saumur.',prenom:'Hélène'},
+  {id:9,src:'Logic-Immo',title:'Grand T4 terrasse — Trélazé',price:'189 000 €',surface:'82 m²',rooms:4,city:'Trélazé',email:'francois.d@sfr.fr',phone:'07 12 34 56 78',type:'Appartement',desc:'Dernier étage, terrasse 25 m² plein sud, 3 chambres. Parking et cave.',prenom:'François'},
+  {id:10,src:'PAP.fr',title:'Longère à rénover — Gennes-Val-de-Loire',price:'165 000 €',surface:'130 m²',rooms:6,city:'Gennes-Val-de-Loire',email:'annie.gennes@gmail.com',phone:'06 33 44 55 66',type:'Maison',desc:'Longère en pierre 6 pièces, jardin 1 200 m², 2 dépendances. 20 min de Saumur.',prenom:'Annie'},
+];
+const SITES=['LeBonCoin','PAP.fr','SeLoger',"Bien'ici",'Particuliers','Figaro Immo','Logic-Immo'];
+const KEY='demarque_v4';
+
+let S={anns:[],seenIds:[],cfg:{nom:'',email:'',tel:'',msg:'',freq:24,auto:true},lastScan:null,scanCount:0};
+let fA='all',fM='all',isRun=false,stopF=false,timers=[],timerIv=null,cd=0;
+
+const $=id=>document.getElementById(id);
+const v=id=>$(id)?$(id).value:'';
+const sv=(id,val)=>{if($(id))$(id).value=val||''};
+
+/* ── PERSIST ── */
+function persist(){
+  try{const d=JSON.stringify(S);localStorage.setItem(KEY,d);sessionStorage.setItem(KEY+'b',d);}catch(e){}
+}
+function restore(){
+  try{
+    const r=localStorage.getItem(KEY)||sessionStorage.getItem(KEY+'b');
+    if(r){const p=JSON.parse(r);S.anns=p.anns||[];S.seenIds=p.seenIds||[];S.cfg={...S.cfg,...(p.cfg||{})};S.lastScan=p.lastScan||null;S.scanCount=p.scanCount||0;}
+  }catch(e){}
+}
+setInterval(persist,8000);
+window.addEventListener('beforeunload',persist);
+window.addEventListener('pagehide',persist);
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')persist();});
+
+function saveCfg(){
+  S.cfg.nom=v('cfgNom');S.cfg.email=v('cfgEmail');S.cfg.tel=v('cfgTel');
+  S.cfg.msg=v('cfgMsg');S.cfg.freq=parseInt(v('cfgFreq'))||24;
+  S.cfg.auto=$('togAuto').classList.contains('on');
+  persist();
+}
+function applyCfg(){
+  sv('cfgNom',S.cfg.nom);sv('cfgEmail',S.cfg.email);sv('cfgTel',S.cfg.tel);
+  if(S.cfg.msg)sv('cfgMsg',S.cfg.msg);
+  if(S.cfg.freq&&$('cfgFreq'))$('cfgFreq').value=S.cfg.freq;
+  if(!S.cfg.auto)$('togAuto').classList.remove('on');
+}
+
+/* ── NAV ── */
+function goScr(name,e){
+  document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
+  $('scr-'+name).classList.add('on');
+  (e||$('ni-'+name)).classList.add('on');
+  $('SCROLL').scrollTop=0;
+}
+function toggleSrc(e){e.classList.toggle('on');e.querySelector('.src-box').textContent=e.classList.contains('on')?'✓':'';}
+function setFilter(f,e){fA=f;document.querySelectorAll('#segs .seg').forEach(t=>t.classList.remove('on'));e.classList.add('on');renderTriage();}
+function setMsgFilter(f,e){fM=f;document.querySelectorAll('#msegs .seg').forEach(t=>t.classList.remove('on'));e.classList.add('on');renderMsg();}
+
+/* ── TRIAGE ── */
+function renderTriage(){
+  const grid=$('triGrid'),emp=$('emptyTriage');
+  grid.innerHTML='';
+  const a=S.anns,nA=a.length,nN=a.filter(x=>x.status==='new').length;
+  const nK=a.filter(x=>x.status==='kept').length,nI=a.filter(x=>x.status==='ignored').length;
+  const nP=a.filter(x=>x.status==='kept'&&x.msgStatus==='pending').length;
+  const nS=a.filter(x=>x.msgStatus==='sent').length;
+  $('sTotal').textContent=nA;$('sKept').textContent=nK;$('sPend').textContent=nP;$('sSent').textContent=nS;
+  $('cAll').textContent=nA;$('cNew').textContent=nN;$('cKept').textContent=nK;$('cIgn').textContent=nI;
+  const nb=$('nb-triage');nb.textContent=nN;nb.style.display=nN>0?'block':'none';
+  // seg "À trier" highlight si nouveaux
+  const segNew=document.querySelectorAll('#segs .seg')[1];
+  if(segNew)segNew.classList.toggle('has-new',nN>0);
+  // warn bandeau
+  $('validateWarn').style.display=nN>0?'flex':'none';
+  if(nN>0)$('validateWarnTxt').textContent=`${nN} annonce${nN>1?'s':''} à trier — valide ou ignore avant d'envoyer.`;
+  let list=a;
+  if(fA==='new')list=a.filter(x=>x.status==='new');
+  else if(fA==='kept')list=a.filter(x=>x.status==='kept');
+  else if(fA==='ignored')list=a.filter(x=>x.status==='ignored');
+  if(!list.length){emp.style.display='flex';return;}
+  emp.style.display='none';
+  [...list].reverse().forEach(x=>grid.appendChild(mkCard(x)));
+}
+
+function mkCard(a){
+  const d=a.data,div=document.createElement('div');
+  const kept=a.status==='kept',ign=a.status==='ignored',sent=a.msgStatus==='sent';
+  div.className='acard'+(kept?' kept':'')+(ign?' ignored':'')+(sent?' msent':'');
+  div.id='ac-'+a.id;
+  // badge
+  let badge='';
+  if(sent) badge='<span class="badge-sent">Envoyé</span>';
+  else if(kept) badge='<span class="badge-kept">Gardé</span>';
+  else if(a.status==='new') badge='<span class="badge-new">À trier</span>';
+  // actions
+  let acts='';
+  if(!sent){
+    if(!ign) acts+=`<button class="abtn keep${kept?' on':''}" onclick="setStatus(${a.id},'${kept?'new':'kept'}')">${kept?'✓ Gardé':'✓ Garder'}</button>`;
+    if(!kept) acts+=`<button class="abtn ign${ign?' on':''}" onclick="setStatus(${a.id},'${ign?'new':'ignored'}')">${ign?'✕ Ignoré':'✕ Ignorer'}</button>`;
+    if(kept) acts=`<button class="abtn q${a.msgStatus==='pending'?' on':''}" onclick="queueMsg(${a.id})" style="grid-column:1/-1">${a.msgStatus==='pending'?'✓ En file d\'envoi':'📤 Mettre en file d\'envoi'}</button>`+acts;
+  } else {
+    acts='<button class="abtn done" style="grid-column:1/-1">✓ Message envoyé</button>';
+  }
+  div.innerHTML=`
+    <div class="atop" onclick="toggleDet(${a.id})">
+      <div class="atop-row1">
+        <div class="asrc-badges"><span class="asrc">${d.src}</span>${badge}</div>
+        <span class="atime">${ago(a.addedAt)}</span>
+      </div>
+      <div class="atitle">${d.title}</div>
+      <div class="aprice-row">
+        <span class="aprice">${d.price}</span>
+        <span class="aprice-meta">${[d.surface,d.rooms>0?d.rooms+'p':null].filter(Boolean).join(' · ')}</span>
+      </div>
+    </div>
+    <div class="adet" id="det-${a.id}">
+      <div class="adet-chips">
+        ${d.surface?`<span class="chip">📐 ${d.surface}</span>`:''}
+        ${d.rooms>0?`<span class="chip">🚪 ${d.rooms} pièces</span>`:''}
+        <span class="chip">📍 ${d.city}</span>
+        <span class="chip">👤 Particulier</span>
+        ${d.email?`<span class="chip em">✉ ${d.email}</span>`:''}
+        ${d.phone?`<span class="chip ph">📞 ${d.phone}</span>`:''}
+      </div>
+      <p class="adesc">${d.desc}</p>
+      <div class="abtns">${acts}</div>
+    </div>`;
+  return div;
+}
+
+function toggleDet(id){const d=$('det-'+id);if(d)d.classList.toggle('open');}
+
+function setStatus(id,st){
+  const a=S.anns.find(x=>x.id===id);if(!a)return;
+  a.status=st;
+  if(st==='kept'){if(a.msgStatus==='none')a.msgStatus='pending';toast('✓ Gardé — message prêt à envoyer','ok');}
+  else if(st==='ignored'){a.msgStatus='none';toast('Ignoré');}
+  else{if(a.msgStatus==='pending')a.msgStatus='none';toast('Annulé');}
+  persist();renderAll();
+}
+function queueMsg(id){
+  const a=S.anns.find(x=>x.id===id);if(!a)return;
+  if(a.msgStatus==='pending'){toast('Déjà en file','warn');return;}
+  a.msgStatus='pending';persist();renderAll();updateMsgBadge();
+  toast('📤 Ajouté à la file','ok');
+}
+
+/* ── MESSAGES ── */
+function renderMsg(){
+  const grid=$('msgGrid'),emp=$('emptyMsg');
+  grid.innerHTML='';
+  const kept=S.anns.filter(a=>a.status==='kept');
+  const nPend=kept.filter(a=>a.msgStatus==='pending').length;
+  let list=kept;
+  if(fM==='pending')list=kept.filter(a=>a.msgStatus==='pending');
+  else if(fM==='sent')list=kept.filter(a=>a.msgStatus==='sent');
+  $('mAll').textContent=kept.length;
+  $('mPend').textContent=nPend;
+  $('mSent').textContent=kept.filter(a=>a.msgStatus==='sent').length;
+  // send all bar
+  const bar=$('sendAllBar');
+  if(nPend>0){bar.style.display='flex';$('sendAllCount').textContent=nPend+' message'+(nPend>1?'s':'')+' prêt'+(nPend>1?'s':'');}
+  else bar.style.display='none';
+  if(!list.length){emp.style.display='flex';return;}
+  emp.style.display='none';
+  [...list].reverse().forEach(a=>{
+    const d=a.data,sent=a.msgStatus==='sent',div=document.createElement('div');
+    div.className='mcard '+(sent?'sent':'pending');div.id='mc-'+a.id;
+    div.innerHTML=`
+      <div class="mcard-top">
+        <div class="mcard-name">${d.prenom||'Propriétaire'}</div>
+        <div class="mcard-time">${ago(a.addedAt)}</div>
+      </div>
+      <div class="mcard-addr">📍 ${d.title} · ${d.city}</div>
+      <div class="mcard-contacts">
+        ${d.email?`<span class="chip em">✉ ${d.email}</span>`:''}
+        ${d.phone?`<span class="chip ph">📞 ${d.phone}</span>`:''}
+      </div>
+      <div class="mcard-msg">${buildMsg(d)}</div>
+      <div class="mcard-foot">
+        <div class="status-tag ${sent?'ok':'pend'}">${sent?'✓ Envoyé':'⏳ En attente'}</div>
+        ${sent
+          ?`<span style="font-size:11px;color:var(--tx3)">${a.sentAt?new Date(a.sentAt).toLocaleString('fr-FR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):''}</span>`
+          :`<button class="send-btn" onclick="sendMsg(${a.id})">Envoyer</button>`
+        }
+      </div>`;
+    grid.appendChild(div);
+  });
+}
+
+function buildMsg(d){
+  const nom=v('cfgNom')||S.cfg.nom||'[Votre nom]',tel=v('cfgTel')||S.cfg.tel||'[Votre tél]';
+  const tpl=v('cfgMsg')||S.cfg.msg||'Bonjour [PRENOM],\n\nCordialement,\n[NOM]\n[TEL]';
+  return tpl.replace(/\[PRENOM\]/g,d.prenom||'Madame/Monsieur').replace(/\[NOM\]/g,nom).replace(/\[BIEN\]/g,d.title).replace(/\[VILLE\]/g,d.city).replace(/\[TEL\]/g,tel);
+}
+function sendMsg(id){
+  const a=S.anns.find(x=>x.id===id);if(!a||a.msgStatus==='sent')return;
+  a.msgStatus='sent';a.sentAt=Date.now();
+  persist();renderAll();updateMsgBadge();
+  toast(`✓ Message envoyé à ${a.data.prenom||'Propriétaire'}`,'ok');
+  log(`📧 → ${a.data.city} (${a.data.src})`,'ls');
+}
+function sendAll(){
+  const p=S.anns.filter(a=>a.status==='kept'&&a.msgStatus==='pending');
+  if(!p.length){toast('Aucun message en attente','warn');return;}
+  p.forEach(a=>{a.msgStatus='sent';a.sentAt=Date.now();});
+  persist();renderAll();updateMsgBadge();
+  toast(`✓ ${p.length} message${p.length>1?'s':''} envoyé${p.length>1?'s':''}`,'ok');
+}
+function updateMsgBadge(){
+  const p=S.anns.filter(a=>a.status==='kept'&&a.msgStatus==='pending').length;
+  const nb=$('nb-msg');nb.textContent=p;nb.style.display=p>0?'block':'none';
+}
+function renderAll(){renderTriage();renderMsg();updateMsgBadge();updateScanInfo();}
+
+/* ── SCAN ── */
+function startScan(){
+  if(isRun)return;
+  isRun=true;stopF=false;
+  $('TERM').innerHTML='';
+  $('launchBtn').disabled=true;$('stopBtn').style.display='block';
+  $('sDot').className='dot run';$('sTxt').textContent='En cours';
+  buildProg();
+  log('🚀 Pige démarrée','li');log('📍 Maine-et-Loire (49)','li');
+  log(`↩ ${S.seenIds.length} annonces déjà connues — skip auto`,'lw');
+  goScr('suivi',$('ni-suivi'));
+
+  let delay=0,nc=0;
+  const sd=[
+    {site:'LeBonCoin',items:[DB[0],DB[3]]},
+    {site:'PAP.fr',items:[DB[1],DB[2],DB[6],DB[9]]},
+    {site:'SeLoger',items:[DB[4]]},
+    {site:"Bien'ici",items:[DB[5]]},
+    {site:'Particuliers',items:[]},
+    {site:'Figaro Immo',items:[DB[7]]},
+    {site:'Logic-Immo',items:[DB[8]]},
+  ];
+  sd.forEach(s=>{
+    timers.push(setTimeout(()=>{if(stopF)return;log(`🌐 ${s.site}...`,'li');},delay));delay+=420;
+    timers.push(setTimeout(()=>{if(stopF)return;updP(s.site,30,0);},delay));delay+=550;
+    s.items.forEach((item,ai)=>{
+      const td=delay+ai*480;
+      timers.push(setTimeout(()=>{
+        if(stopF)return;
+        if(S.seenIds.includes(item.id)){log(`↩ Déjà connue : ${item.title}`,'lw');updP(s.site,30+(ai+1)*18,ai+1);return;}
+        log(`✦ [${s.site}] ${item.title}`,'lf');
+        if(item.phone||item.email)log(`  └ ${item.email||item.phone}`,'ls');
+        updP(s.site,30+(ai+1)*18,ai+1);
+        S.anns.push({id:item.id,data:item,status:'new',msgStatus:'none',addedAt:Date.now()});
+        S.seenIds.push(item.id);nc++;
+        persist();renderAll();
+      },td));
+      delay=td+90;
+    });
+    delay+=140;
+    timers.push(setTimeout(()=>{if(stopF)return;updP(s.site,100,s.items.length);log(`✓ ${s.site}`,'ls');},delay));delay+=260;
+  });
+  timers.push(setTimeout(()=>{
+    if(stopF)return;
+    log(`— Terminé · ${nc} nouvelle${nc>1?'s':''} annonce${nc>1?'s':''}`,'lf');
+    S.lastScan=Date.now();S.scanCount++;persist();
+    finishScan(nc);
+    if($('togAuto').classList.contains('on'))schedNext();
+  },delay+280));
+}
+function stopScan(){stopF=true;timers.forEach(clearTimeout);timers=[];log('⛔ Arrêté','lw');S.lastScan=Date.now();persist();finishScan(0);}
+function finishScan(n){
+  isRun=false;$('launchBtn').disabled=false;$('stopBtn').style.display='none';
+  $('sDot').className='dot ok';$('sTxt').textContent='Terminé';
+  updateScanInfo();
+  toast(n>0?`${n} nouvelle${n>1?'s':''} annonce${n>1?'s':''} à trier`:'Scan terminé — aucune nouvelle','ok');
+  if(n>0)pushNotif(n);
+}
+function updateScanInfo(){
+  const e=$('lastScanInfo'),t=$('lastScanTxt');
+  if(!S.lastScan){e.style.display='none';return;}
+  e.style.display='flex';
+  const d=new Date(S.lastScan);
+  t.textContent=`Dernier scan ${d.toLocaleDateString('fr-FR')} à ${d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})} · ${S.anns.length} annonces · Scan #${S.scanCount}`;
+}
+function schedNext(){
+  const freq=(parseInt(v('cfgFreq'))||24)*3600000;
+  clearInterval(timerIv);cd=freq;$('timerBar').style.display='flex';
+  timerIv=setInterval(()=>{
+    cd-=1000;
+    if(cd<=0){clearInterval(timerIv);$('timerBar').style.display='none';startScan();return;}
+    $('timerFill').style.width=(100-cd/freq*100)+'%';
+    const m=Math.floor(cd/60000),s=Math.floor((cd%60000)/1000);
+    $('timerNext').textContent=m>59?Math.floor(m/60)+'h'+(m%60)+'m':(m+'m'+String(s).padStart(2,'0')+'s');
+  },1000);
+}
+
+/* ── PROGRESS ── */
+function buildProg(){
+  const pl=$('progList');pl.innerHTML='';
+  SITES.forEach(site=>{
+    const k=site.replace(/[^a-z]/gi,'_'),d=document.createElement('div');
+    d.className='prog-item';
+    d.innerHTML=`<div class="prog-name">${site}</div><div class="prog-track"><div class="prog-fill" id="pf-${k}"></div></div><div class="prog-count" id="pc-${k}">—</div>`;
+    pl.appendChild(d);
+  });
+}
+function updP(site,pct,cnt){
+  const k=site.replace(/[^a-z]/gi,'_');
+  const pf=$('pf-'+k),pc=$('pc-'+k);
+  if(pf)pf.style.width=pct+'%';if(pc)pc.textContent=cnt+' ann.';
+}
+function log(msg,cls='li'){
+  const t=$('TERM'),now=new Date().toTimeString().slice(0,8);
+  const l=document.createElement('div');l.className='ll';
+  l.innerHTML=`<span class="lt">${now}</span><span class="${cls}">${msg}</span>`;
+  t.appendChild(l);t.scrollTop=t.scrollHeight;
+}
+
+/* ── NOTIF ── */
+function checkNotif(){if('Notification' in window&&Notification.permission==='default')$('notifBanner').style.display='flex';}
+function askNotif(){if('Notification' in window){Notification.requestPermission().then(p=>{$('notifBanner').style.display='none';if(p==='granted')toast('🔔 Notifications activées','ok');});}}
+function pushNotif(n){
+  if(!$('togNotif').classList.contains('on'))return;
+  if('Notification' in window&&Notification.permission==='granted')
+    new Notification('Demarque Immo',{body:`${n} nouvelle${n>1?'s':''} annonce${n>1?'s':''} à trier`});
+}
+
+/* ── TOAST ── */
+function toast(msg,type=''){
+  const t=$('TOAST');t.textContent=msg;t.className='toast '+(type?type:'')+' show';
+  setTimeout(()=>t.classList.remove('show'),3200);
+}
+
+/* ── UTILS ── */
+function ago(ts){
+  if(!ts)return'';const d=Date.now()-ts;
+  if(d<60000)return'À l\'instant';
+  if(d<3600000)return Math.floor(d/60000)+'min';
+  if(d<86400000)return Math.floor(d/3600000)+'h';
+  return Math.floor(d/86400000)+'j';
+}
+
+/* ── INIT ── */
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+window.addEventListener('DOMContentLoaded',()=>{
+  restore();applyCfg();renderAll();checkNotif();
+});
+</script>
+</body>
+</html>
